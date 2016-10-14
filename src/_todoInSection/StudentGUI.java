@@ -8,8 +8,15 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.RowSorter;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+import model.Student;
 
 @SuppressWarnings("serial")
 public class StudentGUI extends JFrame {
@@ -26,6 +33,7 @@ public class StudentGUI extends JFrame {
 
   // Need a TableModel to set as the model for a JTabel
   private TableModel model = null;
+  
 
   // Like DefaultListModel and JList, now we have
   // a class that implements TableModel so this JTable
@@ -43,22 +51,28 @@ public class StudentGUI extends JFrame {
     setLocation(30, 30);
 
     // TODO: 2) Need a new StudentCollection as our model
+       model = new StudentCollection();
  
     // TODO: 3) Construct the JTable (table) with our model as an argument (could use setModel)
+       table = new JTable(model);
  
     // TODO: 4) Construct a JScrollPane to decorate table so that if the data exceeds the 
     // side of the table in the  GUI, then it automatically becomes scrollable.
+       JScrollPane sc = new JScrollPane(table);
     
     // TODO: 5) Add JScrollPane to this JFrame
-   
+       this.add(sc);
     
     // TODO: Run this code to see if the JTable appears (no code to write)
 
-    
+       
+       
     // TODO: 6) Construct a new RowSorter<TableModel> to be a TableRowSorter
     // while setting its model to model
+       RowSorter<TableModel> rs = new TableRowSorter<TableModel>(model);
  
     // TODO: 7) Link up table and the sorter
+       table.setRowSorter(rs);
  
     // Layout the GUI
     JButton button = new JButton("Select Highlighted Row");
@@ -66,6 +80,8 @@ public class StudentGUI extends JFrame {
     panel.setMaximumSize(new Dimension(30, 30));
     panel.add(button);
     add(panel, BorderLayout.WEST);
+    
+    
 
     // Listen to the button click
     button.addActionListener(new ButtonListener());
@@ -79,7 +95,9 @@ public class StudentGUI extends JFrame {
       // row need table's getSelectedRow and convertRowIndexToModel as
       // well as model's getValueAt(rowIndex, columnIndex). See the API
       // for details.
-      System.out.println("Get student's name from the table");
+    	String name =(String)table.getValueAt(table.getSelectedRow(), 0);
+    	
+      System.out.println("Select name: "+name);
 
     }
   }
